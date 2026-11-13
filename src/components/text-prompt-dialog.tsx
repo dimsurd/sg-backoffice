@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-kit";
+import { useOnce } from "@/lib/use-once";
 
 /**
  * Confirmation dialog that asks for one piece of text (a reason, a comment,
@@ -51,6 +52,7 @@ export function TextPromptDialog({
 }) {
   const [value, setValue] = useState("");
   const valid = optional || value.trim().length >= minLength;
+  const confirm = useOnce(onConfirm, !!pending);
 
   return (
     <Dialog
@@ -64,7 +66,7 @@ export function TextPromptDialog({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (valid) onConfirm(value.trim());
+            if (valid) confirm(value.trim());
           }}
           className="grid gap-4"
         >

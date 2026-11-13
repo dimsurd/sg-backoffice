@@ -23,6 +23,7 @@ import { TextPromptDialog } from "@/components/text-prompt-dialog";
 import { LoadingRows, Spinner } from "@/components/ui-kit";
 import { api, unwrap } from "@/lib/api/client";
 import { formatDateTime, formatIDR, humanize } from "@/lib/format";
+import { useOnce } from "@/lib/use-once";
 
 type InvoiceLike = { id: string; invoiceNo: string; amount: number; status?: string; studentName: string };
 
@@ -205,12 +206,14 @@ export function IssuePackageButton({
         description: `${r.invoice.hours}h package for ${className} · ${formatIDR(r.invoice.amount)}`,
       }),
   });
+  const issueOnce = useOnce(issue.mutate, issue.isPending);
+
   return (
     <Button
       variant="outline"
       size={size}
       disabled={disabled || issue.isPending}
-      onClick={() => issue.mutate()}
+      onClick={() => issueOnce()}
       title={disabled ? "There is already an unpaid package" : `Issue a ${defaultHours}h package invoice`}
     >
       {issue.isPending ? <Spinner /> : <PackagePlus />}

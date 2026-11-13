@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui-kit";
 import { api, unwrap } from "@/lib/api/client";
+import { useOnce } from "@/lib/use-once";
 
 const schema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -28,8 +29,10 @@ export function LoginForm() {
     meta: { silent: true }, // the error is shown inline below instead of a toast
   });
 
+  const loginOnce = useOnce(login.mutate, login.isPending);
+
   return (
-    <form onSubmit={form.handleSubmit((v) => login.mutate(v))} className="w-full max-w-sm space-y-6" noValidate>
+    <form onSubmit={form.handleSubmit((v) => loginOnce(v))} className="w-full max-w-sm space-y-6" noValidate>
       <div className="space-y-1">
         <p className="text-xs font-semibold tracking-[0.25em] text-muted-foreground lg:hidden">STAR GENERATION</p>
         <h1 className="text-2xl font-semibold">Back office sign in</h1>

@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { EmptyState, ErrorState, LoadingRows, PageHeader, Spinner, StatusBadge } from "@/components/ui-kit";
 import { ApiError, api, unwrap, type Schemas } from "@/lib/api/client";
 import { formatDateTime, formatIDR } from "@/lib/format";
+import { useOnce } from "@/lib/use-once";
 
 type AdminClass = Schemas["AdminClass"];
 
@@ -171,6 +172,8 @@ function ClassDialog({ cls, onClose }: { cls: AdminClass | null; onClose: () => 
     },
   });
 
+  const saveOnce = useOnce(save.mutate, save.isPending);
+
   const clashes =
     save.error instanceof ApiError
       ? ((save.error.details as { clashes?: { startsAt: string; otherClass: string }[] } | undefined)?.clashes ?? [])
@@ -179,7 +182,7 @@ function ClassDialog({ cls, onClose }: { cls: AdminClass | null; onClose: () => 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-lg">
-        <form onSubmit={form.handleSubmit((v) => save.mutate(v))} className="grid gap-4" noValidate>
+        <form onSubmit={form.handleSubmit((v) => saveOnce(v))} className="grid gap-4" noValidate>
           <DialogHeader>
             <DialogTitle>{cls ? `Edit ${cls.name}` : "New class"}</DialogTitle>
             <DialogDescription>
