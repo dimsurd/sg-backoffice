@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { IssuePackageButton } from "@/components/money-actions";
@@ -56,21 +57,31 @@ export default function StudentsPage() {
                       </TableRow>
                     );
                   }
+                  // One student, several classes: the student cell spans all their class rows.
                   return rows.map((b, i) => (
-                    <TableRow key={b.enrollmentId}>
-                      <TableCell className="pl-4">
-                        {i === 0 && (
-                          <>
-                            <p className="font-medium">{s.fullName}</p>
-                            <p className="text-xs text-muted-foreground">{s.email}</p>
-                          </>
-                        )}
-                      </TableCell>
+                    <TableRow key={b.enrollmentId} className={i === 0 ? "border-t-2" : "border-dashed"}>
+                      {i === 0 && (
+                        <TableCell rowSpan={rows.length} className="border-r pl-4 align-top">
+                          <p className="font-medium">{s.fullName}</p>
+                          <p className="text-xs text-muted-foreground">{s.email}</p>
+                          {rows.length > 1 && (
+                            <Badge variant="secondary" className="mt-1.5">
+                              {rows.length} classes
+                            </Badge>
+                          )}
+                        </TableCell>
+                      )}
                       <TableCell>{b.className}</TableCell>
                       <TableCell>
-                        <HoursMeter paidMinutes={b.paidMinutes} usedMinutes={b.usedMinutes} reservedMinutes={b.reservedMinutes} />
+                        <HoursMeter
+                          paidMinutes={b.paidMinutes}
+                          usedMinutes={b.usedMinutes}
+                          awaitingMinutes={b.awaitingMinutes}
+                          reservedMinutes={b.reservedMinutes}
+                        />
                         <p className="mt-1 text-xs text-muted-foreground">
                           {formatMinutes(b.usedMinutes)} used · {formatMinutes(b.reservedMinutes)} booked · {formatMinutes(b.paidMinutes)} paid
+                          {b.awaitingMinutes > 0 && ` · ${formatMinutes(b.awaitingMinutes)} awaiting notes`}
                         </p>
                       </TableCell>
                       <TableCell className="text-right font-medium tabular-nums">{formatMinutes(b.remainingMinutes)}</TableCell>
