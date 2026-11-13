@@ -172,20 +172,23 @@ export function HoursMeter({
   paidMinutes,
   usedMinutes,
   reservedMinutes,
+  inverse = false,
 }: {
   paidMinutes: number;
   usedMinutes: number;
   reservedMinutes: number;
+  /** For use on navy surfaces. */
+  inverse?: boolean;
 }) {
   const pct = (n: number) => (paidMinutes > 0 ? Math.min(100, (n / paidMinutes) * 100) : 0);
   return (
     <div
-      className="flex h-1.5 w-full overflow-hidden rounded-full bg-muted"
+      className={cn("flex h-1.5 w-full overflow-hidden rounded-full", inverse ? "bg-white/15" : "bg-muted")}
       role="img"
       aria-label={`${Math.round(pct(usedMinutes))}% used`}
     >
-      <div className="bg-primary" style={{ width: `${pct(usedMinutes)}%` }} />
-      <div className="bg-primary/30" style={{ width: `${pct(reservedMinutes)}%` }} />
+      <div className={inverse ? "bg-accent" : "bg-primary"} style={{ width: `${pct(usedMinutes)}%` }} />
+      <div className={inverse ? "bg-accent/40" : "bg-primary/30"} style={{ width: `${pct(reservedMinutes)}%` }} />
     </div>
   );
 }
