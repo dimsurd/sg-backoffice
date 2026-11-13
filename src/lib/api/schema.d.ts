@@ -1500,10 +1500,20 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Class catalogue with seats left and my enrollment status */
+        /**
+         * Class catalogue (paged, searchable) with seats left and my enrollment status
+         * @description Sorted by name. `q` is matched on the server: every word must appear in the class
+         *     name, description or tutor name (case-insensitive). Page with `limit`/`offset`;
+         *     `nextOffset` is null on the last page.
+         */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    /** @example osn smp friday */
+                    q?: string;
+                    limit?: number;
+                    offset?: number;
+                };
                 header?: {
                     /** @description Which frontend is calling; selects the session cookie and which roles may log in. Defaults to `app`. */
                     "X-SG-Client"?: components["parameters"]["Client"];
@@ -1513,7 +1523,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Active classes */
+                /** @description One page of active classes */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1521,9 +1531,14 @@ export interface paths {
                     content: {
                         "application/json": {
                             classes: components["schemas"]["CatalogueClass"][];
+                            /** @description Matching classes across all pages */
+                            total: number;
+                            /** @description Offset of the next page */
+                            nextOffset: number | null;
                         };
                     };
                 };
+                400: components["responses"]["BadRequest"];
             };
         };
         put?: never;
@@ -1887,7 +1902,7 @@ export interface components {
         Error: {
             error: {
                 /** @enum {string} */
-                code: "bad_request" | "validation_error" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal";
+                code: "bad_request" | "validation_error" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "payload_too_large" | "internal";
                 message: string;
                 details?: unknown;
             };
@@ -1983,12 +1998,15 @@ export interface components {
             myEnrollmentStatus: components["schemas"]["EnrollmentStatus"] | null;
         };
         /**
-         * @description paid = paid package hours; used = lessons that have ended; reserved = upcoming lessons;
-         *     remaining = paid − used; available = remaining − reserved (what can still be scheduled).
+         * @description paid = paid package hours; used = lessons that ended and the tutor has logged;
+         *     awaiting = lessons that ended but aren't logged yet (not deducted, still held);
+         *     reserved = upcoming lessons; remaining = paid − used;
+         *     available = paid − used − awaiting − reserved (what can still be scheduled).
          */
         Balance: {
             paidMinutes: components["schemas"]["Minutes"];
             usedMinutes: components["schemas"]["Minutes"];
+            awaitingMinutes: components["schemas"]["Minutes"];
             reservedMinutes: components["schemas"]["Minutes"];
             remainingMinutes: components["schemas"]["Minutes"];
             availableMinutes: components["schemas"]["Minutes"];

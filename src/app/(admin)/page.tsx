@@ -179,10 +179,16 @@ export default function DashboardPage() {
                       </div>
                       <StatusBadge status={b.flag} />
                     </div>
-                    <HoursMeter paidMinutes={b.paidMinutes} usedMinutes={b.usedMinutes} reservedMinutes={b.reservedMinutes} />
+                    <HoursMeter
+                      paidMinutes={b.paidMinutes}
+                      usedMinutes={b.usedMinutes}
+                      awaitingMinutes={b.awaitingMinutes}
+                      reservedMinutes={b.reservedMinutes}
+                    />
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-xs text-muted-foreground">
                         {formatMinutes(b.reservedMinutes)} booked in upcoming lessons
+                        {b.awaitingMinutes > 0 && ` · ${formatMinutes(b.awaitingMinutes)} awaiting notes`}
                       </p>
                       {b.hasUnpaidPackage ? (
                         <span className="text-xs font-medium text-warning">Package invoice unpaid</span>

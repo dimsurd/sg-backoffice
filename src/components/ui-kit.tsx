@@ -172,11 +172,14 @@ export function HoursMeter({
   paidMinutes,
   usedMinutes,
   reservedMinutes,
+  awaitingMinutes = 0,
   inverse = false,
 }: {
   paidMinutes: number;
   usedMinutes: number;
   reservedMinutes: number;
+  /** Lessons held but not yet logged by the tutor: held, not deducted. */
+  awaitingMinutes?: number;
   /** For use on navy surfaces. */
   inverse?: boolean;
 }) {
@@ -188,6 +191,7 @@ export function HoursMeter({
       aria-label={`${Math.round(pct(usedMinutes))}% used`}
     >
       <div className={inverse ? "bg-accent" : "bg-primary"} style={{ width: `${pct(usedMinutes)}%` }} />
+      <div className={inverse ? "bg-accent/70" : "bg-primary/60"} style={{ width: `${pct(awaitingMinutes)}%` }} />
       <div className={inverse ? "bg-accent/40" : "bg-primary/30"} style={{ width: `${pct(reservedMinutes)}%` }} />
     </div>
   );

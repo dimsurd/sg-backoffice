@@ -103,7 +103,7 @@ export default function LogbookReviewPage() {
             <Card key={l.id}>
               <CardHeader>
                 <CardDescription>
-                  Lesson {i + 1} · {formatLessonSlot(l.startsAt, l.endsAt)} · {l.tutorName}
+                  Lesson {entries.length - i} · {formatLessonSlot(l.startsAt, l.endsAt)} · {l.tutorName}
                 </CardDescription>
                 <CardTitle className="text-lg">{l.entry!.topic}</CardTitle>
               </CardHeader>
