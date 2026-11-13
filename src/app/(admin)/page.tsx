@@ -290,7 +290,7 @@ function MarginCell({ margin, pct }: { margin: number; pct: number | null }) {
   return (
     <span className={cn("tabular-nums", margin < 0 ? "text-destructive" : margin > 0 ? "text-success" : "")}>
       {formatIDR(margin)}
-      {pct !== null && <span className="ml-1 text-xs opacity-80">({pct}%)</span>}
+      {pct !== null && <span className="ml-1 text-xs">({pct}%)</span>}
     </span>
   );
 }

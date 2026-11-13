@@ -35,12 +35,19 @@
   --secondary: #eef1f6;
   --secondary-foreground: var(--sg-navy);
   --muted: #f2f4f7;
-  --muted-foreground: var(--sg-cloud-text);
+  /* #6E7585 is 4.2:1 on grey surfaces; this is the nearest shade that passes WCAG AA (4.5:1). */
+  --muted-foreground: #646b7b;
   --accent: var(--sg-gold);
   --accent-foreground: var(--sg-navy);
-  --destructive: var(--sg-danger);
-  --success: var(--sg-success);
-  --warning: #b98a00; /* gold darkened for text contrast on light surfaces */
+  /*
+   * Status colours are mostly used as TEXT (badges, amounts, errors). The brief's
+   * #0AB848 (2.6:1) and #FF2819 (3.7:1) fail WCAG AA as text on the light surface,
+   * so these are the closest shades that pass 4.5:1 on both the surface and their
+   * own 10% tint. The exact brand values stay available as --sg-success/--sg-danger.
+   */
+  --destructive: #c8170a;
+  --success: #05732f;
+  --warning: #8a6400; /* gold, darkened for text */
   --border: var(--sg-cloud);
   --input: var(--sg-cloud);
   --ring: var(--sg-gold);
