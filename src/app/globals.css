@@ -1,26 +1,126 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+/*
+ * Star Generation design tokens.
+ * Brand values come from the brief; every shadcn component reads these
+ * semantic variables, so the whole UI is themed from this one block.
+ *
+ *   Navy    #2F3F5F  primary text, sidebar, primary buttons
+ *   Gold    #F1C019  accent, highlights, active states
+ *   Surface #FAFDFF  cards and page background
+ *   Cloud   #E0E2E7 / #6E7585  borders / muted text
+ *   Status  #0AB848 / #FF2819  success (Paid, Approved) / destructive
+ *   DM Sans for all text, 6px radius on cards
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --sg-navy: #2f3f5f;
+  --sg-navy-700: #24324d;
+  --sg-gold: #f1c019;
+  --sg-surface: #fafdff;
+  --sg-cloud: #e0e2e7;
+  --sg-cloud-text: #6e7585;
+  --sg-success: #0ab848;
+  --sg-danger: #ff2819;
+
+  --background: var(--sg-surface);
+  --foreground: var(--sg-navy);
+  --card: var(--sg-surface);
+  --card-foreground: var(--sg-navy);
+  --popover: #ffffff;
+  --popover-foreground: var(--sg-navy);
+  --primary: var(--sg-navy);
+  --primary-foreground: #ffffff;
+  --secondary: #eef1f6;
+  --secondary-foreground: var(--sg-navy);
+  --muted: #f2f4f7;
+  --muted-foreground: var(--sg-cloud-text);
+  --accent: var(--sg-gold);
+  --accent-foreground: var(--sg-navy);
+  --destructive: var(--sg-danger);
+  --success: var(--sg-success);
+  --warning: #b98a00; /* gold darkened for text contrast on light surfaces */
+  --border: var(--sg-cloud);
+  --input: var(--sg-cloud);
+  --ring: var(--sg-gold);
+  --radius: 6px;
+
+  --chart-1: var(--sg-navy);
+  --chart-2: var(--sg-gold);
+  --chart-3: var(--sg-success);
+  --chart-4: var(--sg-cloud-text);
+  --chart-5: var(--sg-danger);
+
+  --sidebar: var(--sg-navy);
+  --sidebar-foreground: #dfe4ee;
+  --sidebar-primary: var(--sg-gold);
+  --sidebar-primary-foreground: var(--sg-navy);
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-ring: var(--sg-gold);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-card: 6px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "tnum" 1; /* aligned figures for money tables */
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
 }
