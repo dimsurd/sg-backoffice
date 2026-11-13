@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Suspense } from "react";
 import { LoginForm } from "./login-form";
 
@@ -8,7 +9,7 @@ export default function LoginPage() {
   return (
     <main className="grid min-h-screen lg:grid-cols-2">
       <section className="relative hidden flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <p className="text-sm font-semibold tracking-[0.25em]">STAR GENERATION</p>
+        <Image src="/brand/wordmark.png" alt="Star Generation" width={240} height={35} priority />
         <div className="max-w-md space-y-4">
           <h2 className="text-3xl leading-tight font-semibold">
             Every student&apos;s hours, every unpaid invoice and every class margin — in one place.

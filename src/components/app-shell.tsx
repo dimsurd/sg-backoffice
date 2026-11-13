@@ -9,11 +9,11 @@ import {
   LogOut,
   Menu,
   ReceiptText,
-  Star,
   Users,
   Wallet,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -53,14 +53,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const sidebar = (
     <nav className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
-      <div className="flex items-center gap-2 px-5 py-5">
-        <span className="flex size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-          <Star className="size-4 fill-current" />
-        </span>
-        <div className="leading-tight">
-          <p className="text-sm font-semibold tracking-[0.18em] text-white">STAR GENERATION</p>
-          <p className="text-[11px] text-sidebar-foreground/70">Back office</p>
-        </div>
+      <div className="px-5 py-5">
+        <Image src="/brand/wordmark.png" alt="Star Generation" width={186} height={27} priority />
+        <p className="mt-2 text-[11px] font-medium tracking-[0.2em] text-sidebar-foreground/70 uppercase">Back office</p>
       </div>
       <ul className="flex-1 space-y-0.5 px-3">
         {NAV.map(({ href, label, icon: Icon }) => {
@@ -133,7 +128,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button onClick={() => setOpen((o) => !o)} aria-label="Toggle menu" className="rounded-md p-1.5 hover:bg-muted">
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
-          <span className="text-sm font-semibold tracking-[0.18em]">STAR GENERATION</span>
+          <span className="flex items-center gap-2">
+            <Image src="/brand/star-mark.png" alt="" width={20} height={22} />
+            <span className="text-sm font-semibold tracking-[0.18em]">STAR GENERATION</span>
+          </span>
         </header>
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
       </div>

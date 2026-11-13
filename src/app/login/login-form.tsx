@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -34,7 +35,10 @@ export function LoginForm() {
   return (
     <form onSubmit={form.handleSubmit((v) => loginOnce(v))} className="w-full max-w-sm space-y-6" noValidate>
       <div className="space-y-1">
-        <p className="text-xs font-semibold tracking-[0.25em] text-muted-foreground lg:hidden">STAR GENERATION</p>
+        <div className="mb-4 flex items-center gap-2 lg:hidden">
+          <Image src="/brand/star-mark.png" alt="" width={24} height={27} />
+          <span className="text-xs font-semibold tracking-[0.25em]">STAR GENERATION</span>
+        </div>
         <h1 className="text-2xl font-semibold">Back office sign in</h1>
         <p className="text-sm text-muted-foreground">For admins. Tutors and students use the Star Generation app.</p>
       </div>
