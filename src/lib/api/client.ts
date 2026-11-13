@@ -41,7 +41,14 @@ type Result<T> = { data?: T; error?: unknown; response: Response };
 
 /** Unwraps an openapi-fetch result: returns data or throws ApiError with the API's message. */
 export async function unwrap<T>(promise: Promise<Result<T>>): Promise<T> {
-  const { data, error, response } = await promise;
+  let result: Result<T>;
+  try {
+    result = await promise;
+  } catch {
+    // fetch() rejects on network failure; show words, not "Failed to fetch".
+    throw new ApiError(0, "Couldn't reach the server. Check your connection and try again.");
+  }
+  const { data, error, response } = result;
   if (error !== undefined || !response.ok) {
     const e = (error as { error?: { message?: string; details?: unknown } } | undefined)?.error;
     throw new ApiError(response.status, e?.message ?? "Something went wrong", e?.details);
