@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge } from "@/components/ui-kit";
+import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge, SegmentedControl } from "@/components/ui-kit";
 import { api, unwrap, type Schemas } from "@/lib/api/client";
 import { formatLessonSlot, formatMinutes } from "@/lib/format";
 
@@ -51,12 +50,15 @@ export default function LessonsPage() {
     <>
       <PageHeader title="Lessons" description="Every scheduled lesson across tutors. Times are in WIB." />
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <Tabs value={when} onValueChange={(v) => setWhen(v as "upcoming" | "past")}>
-          <TabsList>
-            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-            <TabsTrigger value="past">Past</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <SegmentedControl
+          label="When"
+          value={when}
+          onChange={setWhen}
+          options={[
+            { value: "upcoming", label: "Upcoming" },
+            { value: "past", label: "Past" },
+          ]}
+        />
         <Select value={classId} onValueChange={setClassId}>
           <SelectTrigger className="w-56" aria-label="Class">
             <SelectValue />

@@ -6,8 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge } from "@/components/ui-kit";
+import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge, SegmentedControl } from "@/components/ui-kit";
 import { api, unwrap } from "@/lib/api/client";
 import { formatDate, formatIDR, formatMonth } from "@/lib/format";
 
@@ -27,15 +26,19 @@ export default function LogbooksPage() {
         title="Logbooks"
         description="Tutors submit one logbook per class per month. Review it, check the earnings, then approve — parents and students only see approved logbooks."
       />
-      <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)} className="mb-4">
-        <TabsList>
-          <TabsTrigger value="submitted">Awaiting review</TabsTrigger>
-          <TabsTrigger value="changes_requested">Sent back</TabsTrigger>
-          <TabsTrigger value="approved">Approved</TabsTrigger>
-          <TabsTrigger value="draft">Drafts</TabsTrigger>
-          <TabsTrigger value="all">All</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <SegmentedControl
+        label="Logbook status"
+        value={filter}
+        onChange={setFilter}
+        className="mb-4"
+        options={[
+          { value: "submitted", label: "Awaiting review" },
+          { value: "changes_requested", label: "Sent back" },
+          { value: "approved", label: "Approved" },
+          { value: "draft", label: "Drafts" },
+          { value: "all", label: "All" },
+        ]}
+      />
       <Card className="py-0">
         <CardContent className="px-0">
           {logbooks.error ? (

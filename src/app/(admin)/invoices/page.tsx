@@ -5,8 +5,7 @@ import { useState } from "react";
 import { InvoiceActions } from "@/components/money-actions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge } from "@/components/ui-kit";
+import { EmptyState, ErrorState, LoadingRows, PageHeader, StatusBadge, SegmentedControl } from "@/components/ui-kit";
 import { api, unwrap } from "@/lib/api/client";
 import { formatDate, formatIDR } from "@/lib/format";
 
@@ -26,14 +25,18 @@ export default function InvoicesPage() {
         title="Invoices"
         description="One invoice per package of hours. Payments are recorded here (no payment gateway)."
       />
-      <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)} className="mb-4">
-        <TabsList>
-          <TabsTrigger value="unpaid">Unpaid</TabsTrigger>
-          <TabsTrigger value="paid">Paid</TabsTrigger>
-          <TabsTrigger value="void">Void</TabsTrigger>
-          <TabsTrigger value="all">All</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <SegmentedControl
+        label="Invoice status"
+        value={filter}
+        onChange={setFilter}
+        className="mb-4"
+        options={[
+          { value: "unpaid", label: "Unpaid" },
+          { value: "paid", label: "Paid" },
+          { value: "void", label: "Void" },
+          { value: "all", label: "All" },
+        ]}
+      />
       <Card className="py-0">
         <CardContent className="px-0">
           {invoices.error ? (

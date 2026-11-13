@@ -192,3 +192,44 @@ export function HoursMeter({
     </div>
   );
 }
+
+// ---------------------------------------------------------------- Segmented control
+/**
+ * A row of mutually exclusive filter buttons. Used instead of Tabs when the
+ * buttons filter one list (Tabs require a tab panel per tab for valid ARIA).
+ */
+export function SegmentedControl<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+  className,
+}: {
+  label: string;
+  value: T;
+  onChange: (value: T) => void;
+  options: { value: T; label: string }[];
+  className?: string;
+}) {
+  return (
+    <div role="group" aria-label={label} className={cn("inline-flex w-fit rounded-lg bg-muted p-[3px]", className)}>
+      {options.map((o) => {
+        const active = o.value === value;
+        return (
+          <button
+            key={o.value}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onChange(o.value)}
+            className={cn(
+              "rounded-md px-2.5 py-1 text-sm font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+              active ? "bg-background text-foreground shadow-sm" : "text-foreground/75 hover:text-foreground",
+            )}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
